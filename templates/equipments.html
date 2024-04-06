@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'equipments',title = ${title + ' | ' + site.title}, head = ~{::head},_title = ${title})}">
+      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'page',title = ${singlePage.spec.title + ' | ' + site.title}, head = ~{::head})}">
 <th:block th:fragment="head">
-    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${_title},
-                _permalink = '/equipments',
-                _cover = ${theme.config.other.opengraph.image},
-                _excerpt = ${site.seo.description},
+    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${singlePage.spec.title},
+                _permalink = ${singlePage.status.permalink},
+                _cover = ${singlePage.spec.cover},
+                _excerpt = ${singlePage.status.excerpt},
                 _type = 'website')}"></th:block>
 </th:block>
 <th:block th:fragment="content">
@@ -14,47 +14,48 @@
 
         <!-- 头部导航栏 -->
         <header class="not-top-img" id="page-header">
-            <nav th:replace="~{modules/nav :: nav(title = ${_title})}"></nav>
+            <nav th:replace="~{modules/nav :: nav(title = ${singlePage.spec.title})}"></nav>
         </header>
         <main class="layout hide-aside" id="content-inner">
             <div id="page">
-                <div  th:replace="~{macro/author-content :: author-content(background = ${theme.config.equipment.backgroundImg},
+                <div th:replace="~{macro/author-content :: author-content(background = ${theme.config.equipment.backgroundImg},
                         smallTitle = ${theme.config.equipment.smallTitle},
                         bigTitle = ${theme.config.equipment.bigTitle},
                         detail = ${theme.config.equipment.detail},
                         buttonUrl = '',
-                        buttonTitle = '')}" ></div>
-                <div id="equipment" th:if="${not #lists.isEmpty(groups)}">
-                    <th:block th:each="group : ${groups}">
+                        buttonTitle = '')}"></div>
+                <div id="equipment" th:if="${not #lists.isEmpty(theme.config.equipment.category_list)}"
+                     th:with="categoryList = ${theme.config.equipment.category_list}">
+                    <th:block th:each="category : ${categoryList}">
                         <div class="equipment-item">
-                            <h2 class="equipment-item-title">[[${group.spec.displayName}]]</h2>
-                            <div class="equipment-item-description">[[${#annotations.get(group, 'description')}]]</div>
-                            <div class="equipment-item-content" th:with="equipmentList = ${group.equipments}">
+                            <h2 class="equipment-item-title">[[${category.category_name}]]</h2>
+                            <div class="equipment-item-description">[[${category.description}]]</div>
+                            <div class="equipment-item-content" th:with="equipmentList = ${category.equipment_list}">
 
                                 <div class="equipment-item-content-item" th:each="equipment : ${equipmentList}">
                                     <div class="equipment-item-content-item-cover">
                                         <img class="equipment-item-content-item-image"
-                                             th:alt="${equipment.spec.displayName}"
-                                             th:src="${isLazyload ? loadingImg : equipment.spec.url}"
-                                             th:data-lazy-src="${ isLazyload ? equipment.spec.url : ''}">
+                                             th:alt="${equipment.name}"
+                                             th:src="${isLazyload ? loadingImg : equipment.img}"
+                                             th:data-lazy-src="${ isLazyload ? equipment.img : ''}">
                                     </div>
                                     <div class="equipment-item-content-item-info">
                                         <div class="equipment-item-content-item-name"
-                                             th:onclick="rm.rightmenuCopyText([[${equipment.spec.displayName}]]);btf.snackbarShow('已复制装备名称');">
-                                            [[${equipment.spec.displayName}]]
+                                             th:onclick="rm.rightmenuCopyText([[${equipment.name}]]);btf.snackbarShow('已复制装备名称');">
+                                            [[${equipment.name}]]
                                         </div>
-                                        <div class="equipment-item-content-item-specification">[[${#annotations.get(equipment, 'model')}]]
+                                        <div class="equipment-item-content-item-specification">[[${equipment.model}]]
                                         </div>
                                         <div class="equipment-item-content-item-description">
-                                            [[${equipment.spec.description}]]
+                                            [[${equipment.description}]]
                                         </div>
                                         <div class="equipment-item-content-item-toolbar">
-                                            <a class="equipment-item-content-item-link" th:href="${#annotations.get(equipment, 'link')}"
-                                               target="_blank">[[${#annotations.get(equipment, 'button')}]]</a>
+                                            <a class="equipment-item-content-item-link" th:href="${equipment.url}"
+                                               target="_blank">[[${equipment.button}]]</a>
                                             <a class="bber-reply"
-                                               th:onclick="rightMenuCommentText([['&quot;'+${equipment.spec.displayName}+' '+${#annotations.get(equipment, 'model')}+' '+${equipment.spec.description}+'&quot;']]);"
+                                               th:onclick="rightMenuCommentText([['&quot;'+${equipment.name}+' '+${equipment.model}+' '+${equipment.description}+'&quot;']]);"
                                                data-pjax-state="">
-                                                <i class="haofont hao-icon-chat--fill" style="font-size: 22px;"></i>
+                                                <i class="haofont hao-icon-message" style="font-size: 17px;"></i>
                                             </a>
                                         </div>
                                     </div>
@@ -196,13 +197,13 @@
                 <th:block
                         th:replace="~{modules/comment :: comment(group = 'content.halo.run',
                   kind = 'SinglePage',
-                  name = 'equipment',
-                  allowComment = true)}"/>
+                  name = ${singlePage.metadata.name},
+                  allowComment = ${singlePage.spec.allowComment})}"/>
             </div>
 
         </main>
         <!-- 底部 -->
-        <footer th:replace="~{modules/footer}"/>
+        <footer th:replace="~{modules/footer :: footer}"></footer>
         <!-- 卡片顶部气泡效果 -->
         <script th:if="${theme.config.other.bubbleEnable}" async data-pjax
                 th:src="${assets_link + '/libs/canvas/bubble.js'}"></script>

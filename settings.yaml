@@ -310,13 +310,13 @@ spec:
                 colorTwoLight: "#ffbf37"
                 colorOneDark: "#e22a16"
                 colorTwoDark: "#da980c"
-#              - title: "实用教程"
-#                icon: "haofont hao-icon-book"
-#                url: "/"
-#                colorOneLight: "#18e7ae"
-#                colorTwoLight: "#1eebeb"
-#                colorOneDark: "#099e74"
-#                colorTwoDark: "#0ea4a4"
+            #              - title: "实用教程"
+            #                icon: "haofont hao-icon-book"
+            #                url: "/"
+            #                colorOneLight: "#18e7ae"
+            #                colorTwoLight: "#1eebeb"
+            #                colorOneDark: "#099e74"
+            #                colorTwoDark: "#0ea4a4"
             techStack:
           children:
             - $formkit: select
@@ -2411,15 +2411,15 @@ spec:
               name: avatar
               label: 头像
               placeholder: 请输入头像地址
-#            - $formkit: radio
-#              name: sign
-#              label: 标记
-#              value: N
-#              options:
-#                - label: 是
-#                  value: Y
-#                - label: 否
-#                  value: N
+    #            - $formkit: radio
+    #              name: sign
+    #              label: 标记
+    #              value: N
+    #              options:
+    #                - label: 是
+    #                  value: Y
+    #                - label: 否
+    #                  value: N
 
     - group: comments
       label: 评论
@@ -3286,6 +3286,112 @@ spec:
                   label: 结束时间
                   placeholder: 请输入结束时间(小时)
                   help: 可以与开始时间相同，表示一个小时内的问候
+    - group: equipment
+      label: 我的装备
+      formSchema:
+        - $formkit: attachment
+          name: backgroundImg
+          label: 背景图
+          value: https://liuzhihang.com/upload/moments.png
+          placeholder: 请输入图片地址
+        - $formkit: text
+          name: smallTitle
+          label: 小标题
+          value: 好物
+        - $formkit: text
+          name: bigTitle
+          label: 大标题
+          value: 实物装备推荐
+        - $formkit: text
+          name: detail
+          label: 描述
+          value: 跟我一起享受科技带来的乐趣
+        - $formkit: repeater
+          name: category_list
+          label: 我的装备
+          value: [ ]
+          children:
+            - $formkit: text
+              name: category_name
+              label: 装备分类名称
+              placeholder: 请输入装备分类名称
+              value: 生产力
+            - $formkit: text
+              name: description
+              label: 分类描述信息
+              placeholder: 请输入分类描述信息
+              value: 提升自己生产效率的硬件设备
+            - $formkit: repeater
+              name: equipment_list
+              label: 装备列表
+              value: [ ]
+              children:
+                - $formkit: attachment
+                  name: img
+                  label: 装备展示图
+                  placeholder: 请输入装备展示图地址
+                - $formkit: text
+                  name: name
+                  label: 装备名称
+                  placeholder: 请输入装备名称
+                  value: MacBookPro
+                - $formkit: text
+                  name: model
+                  label: 装备型号/版本
+                  placeholder: 请输入装备型号/版本
+                  value: M1Pro 32G / 1TB
+                - $formkit: textarea
+                  name: description
+                  label: 装备描述
+                  placeholder: 请输入装备描述
+                  value: 屏幕显示效果好、色彩准确、对比度强、性能强劲、续航优秀。可以用来开发和设计。
+                - $formkit: text
+                  name: button
+                  label: 左下角按钮显示文字
+                  placeholder: 请输入左下角按钮显示文字
+                  value: 详情
+                - $formkit: text
+                  name: url
+                  label: 左下角按钮跳转链接
+                  placeholder: 请输入左下角按钮跳转链接
+                  value: https://www.apple.com.cn/macbook-pro/
+                  
+    - group: lovely_girls
+      label: 我的老婆
+      formSchema:
+        - $formkit: text
+          name: bigTitle
+          label: 大标题
+          value: Lovely Girls
+        - $formkit: text
+          name: icon
+          label: 图标
+          value: haofont hao-icon-heartbeat-bold
+        - $formkit: text
+          name: smallTitle
+          label: 小标题
+          value: 大家都是我的天使
+        - $formkit: repeater
+          name: girls_list
+          label: 我的老婆
+          value: [ ]
+          children:
+            - $formkit: attachment
+              name: girl_avatar
+              label: 头像
+              value: https://s4.anilist.co/file/anilistcdn/character/medium/b88575-CjdhrvYLrToO.png
+            - $formkit: text
+              name: girl_name
+              label: 姓名
+              value: 雷姆(Re:从零开始的异世界生活)
+            - $formkit: text
+              name: work_name
+              label: 作品名称
+              value: Re:从零开始的异世界生活
+            - $formkit: text
+              name: girl_link
+              label: 链接
+              help: 为空时链接为"https://zh.moegirl.org.cn/"+姓名，例如：https://zh.moegirl.org.cn/雷姆(Re:从零开始的异世界生活)
 
     - group: advertise
       label: 广告设置
